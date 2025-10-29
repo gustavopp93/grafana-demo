@@ -1,6 +1,5 @@
 # Grafana data
 grafana-data/
-grafana/provisioning/
 
 # Docker volumes
 *.volumes
