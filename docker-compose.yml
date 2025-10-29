@@ -19,6 +19,19 @@ services:
     networks:
       - grafana-network
 
+  loki:
+    image: grafana/loki:latest
+    container_name: loki
+    ports:
+      - "3100:3100"
+    volumes:
+      - ./loki/loki-config.yml:/etc/loki/local-config.yaml
+      - loki-data:/loki
+    command: -config.file=/etc/loki/local-config.yaml
+    restart: unless-stopped
+    networks:
+      - grafana-network
+
   grafana:
     image: grafana/grafana:latest
     container_name: grafana
@@ -27,7 +40,7 @@ services:
     environment:
       - GF_SECURITY_ADMIN_USER=admin
       - GF_SECURITY_ADMIN_PASSWORD=admin
-      - GF_INSTALL_PLUGINS=
+      - GF_INSTALL_PLUGINS=grafana-worldmap-panel
     volumes:
       - grafana-data:/var/lib/grafana
       - ./grafana/provisioning:/etc/grafana/provisioning
@@ -36,11 +49,14 @@ services:
       - grafana-network
     depends_on:
       - prometheus
+      - loki
 
 volumes:
   grafana-data:
     driver: local
   prometheus-data:
+    driver: local
+  loki-data:
     driver: local
 
 networks:
