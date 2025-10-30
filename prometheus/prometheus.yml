@@ -9,4 +9,4 @@ scrape_configs:
 
   - job_name: 'nginx-django'
     static_configs:
-      - targets: ['host.docker.internal:9113']
+      - targets: ['qualitydemo-nginx-exporter:9113']
