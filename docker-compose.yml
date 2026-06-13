@@ -15,7 +15,7 @@ services:
     networks:
       - grafana-network
     healthcheck:
-      test: ["CMD", "influx", "-execute", "SHOW DATABASES"]
+      test: ["CMD", "curl", "-f", "http://localhost:8086/ping"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -34,6 +34,7 @@ services:
       - '--web.console.libraries=/etc/prometheus/console_libraries'
       - '--web.console.templates=/etc/prometheus/consoles'
       - '--web.enable-lifecycle'
+      - '--web.enable-remote-write-receiver'
     restart: unless-stopped
     networks:
       - grafana-network
